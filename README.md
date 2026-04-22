@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# Plot
-Plot personly
-=======
 # Ink — 现代笔记博客 · Liquid Glass UI
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
@@ -429,4 +425,3 @@ npm run db:restore -- dev.db.20260419-213000
 ## 📄 License
 
 MIT
->>>>>>> e3f19f0 (init)
