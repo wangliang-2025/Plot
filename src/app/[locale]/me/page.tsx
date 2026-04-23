@@ -1,10 +1,16 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
-import { Sparkles, Star, GitBranch, FolderOpen, AlertTriangle } from 'lucide-react';
-import { safeGetGiteeProfile, type GiteeRepo } from '@/lib/gitee';
-import { GiteeProfileCard } from '@/components/gitee-profile-card';
-import { GiteeRepoCard } from '@/components/gitee-repo-card';
-import { GiteeIcon } from '@/components/icons/gitee';
+import {
+  Sparkles,
+  Star,
+  GitBranch,
+  FolderOpen,
+  AlertTriangle,
+  Github,
+} from 'lucide-react';
+import { safeGetGithubProfile, type GitHubRepo } from '@/lib/github';
+import { GithubProfileCard } from '@/components/github-profile-card';
+import { GithubRepoCard } from '@/components/github-repo-card';
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -24,11 +30,11 @@ export default async function MePage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations('me');
 
-  const result = await safeGetGiteeProfile();
+  const result = await safeGetGithubProfile();
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-12">
-      {/* 页头 */}
+      {/* Page header */}
       <header className="mb-10 text-center sm:text-left">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-white/40 px-3 py-1 text-xs font-medium text-[hsl(var(--accent))] backdrop-blur dark:bg-white/5">
           <Sparkles className="h-3 w-3" />
@@ -42,29 +48,30 @@ export default async function MePage({ params }: Props) {
         </p>
       </header>
 
-      {/* 状态分支：未配置 */}
+      {/* Unconfigured state */}
       {!result.ok && result.reason === 'unconfigured' && (
         <div className="card glass p-10 text-center">
-          <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[#C71D23]/10 text-[#C71D23]">
-            <GiteeIcon size={28} brand />
+          <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-foreground/5 text-foreground">
+            <Github className="h-7 w-7" />
           </div>
           <h2 className="mt-4 font-serif text-2xl font-bold">{t('unconfigured_title')}</h2>
           <p className="mt-2 text-sm text-muted-foreground">{t('unconfigured_hint')}</p>
           <pre className="mx-auto mt-4 inline-block rounded-xl bg-white/50 px-4 py-2 text-left text-xs font-mono shadow-inner dark:bg-white/5">
             <span className="text-muted-foreground"># .env</span>
-            {'\n'}NEXT_PUBLIC_GITEE_USERNAME=<span className="text-[hsl(var(--accent))]">your-username</span>
+            {'\n'}NEXT_PUBLIC_GITHUB_USERNAME=
+            <span className="text-[hsl(var(--accent))]">your-username</span>
           </pre>
         </div>
       )}
 
-      {/* 状态分支：API 拉取失败 */}
+      {/* Fetch failure state */}
       {!result.ok && result.reason === 'fetch_failed' && (
         <div className="card glass p-10">
           <div className="flex items-start gap-4">
             <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
               <AlertTriangle className="h-6 w-6" />
             </div>
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0 flex-1">
               <h2 className="font-serif text-xl font-bold">{t('fetch_failed_title')}</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 {t('fetch_failed_hint', { username: result.username })}
@@ -79,13 +86,13 @@ export default async function MePage({ params }: Props) {
               </details>
               <div className="mt-4">
                 <a
-                  href={`https://gitee.com/${result.username}`}
+                  href={`https://github.com/${result.username}`}
                   target="_blank"
                   rel="noreferrer"
                   className="btn-accent h-10"
                 >
-                  <GiteeIcon size={14} />
-                  {t('open_gitee_directly')}
+                  <Github className="h-4 w-4" />
+                  {t('open_github_directly')}
                 </a>
               </div>
             </div>
@@ -93,10 +100,10 @@ export default async function MePage({ params }: Props) {
         </div>
       )}
 
-      {/* 正常分支 */}
+      {/* Happy path */}
       {result.ok && (
         <>
-          <GiteeProfileCard user={result.data.user} />
+          <GithubProfileCard user={result.data.user} />
 
           <RepoSection repos={result.data.repos} t={t} />
         </>
@@ -109,10 +116,10 @@ function RepoSection({
   repos,
   t,
 }: {
-  repos: GiteeRepo[];
+  repos: GitHubRepo[];
   t: Awaited<ReturnType<typeof getTranslations<'me'>>>;
 }) {
-  // 仓库分两组：精选（star 最多前 6 个 / 若不足 6 则全部）+ 其余
+  // Featured: top 6 by stars; the rest go into a secondary grid.
   const sortedByStar = [...repos].sort(
     (a, b) => b.stargazers_count - a.stargazers_count
   );
@@ -145,7 +152,7 @@ function RepoSection({
         </div>
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {featured.map((r) => (
-            <GiteeRepoCard key={r.id} repo={r} />
+            <GithubRepoCard key={r.id} repo={r} />
           ))}
         </div>
       </section>
@@ -158,7 +165,7 @@ function RepoSection({
           </h2>
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {rest.map((r) => (
-              <GiteeRepoCard key={r.id} repo={r} />
+              <GithubRepoCard key={r.id} repo={r} />
             ))}
           </div>
         </section>

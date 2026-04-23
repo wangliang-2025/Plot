@@ -1,13 +1,12 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { Github, Rss, Sparkles } from 'lucide-react';
-import { GiteeIcon } from './icons/gitee';
 
 export function SiteFooter() {
   const t = useTranslations('footer');
   const year = new Date().getFullYear();
   const name = process.env.NEXT_PUBLIC_SITE_NAME || 'Ink';
-  const giteeUser = process.env.NEXT_PUBLIC_GITEE_USERNAME?.trim();
+  const githubUser = process.env.NEXT_PUBLIC_GITHUB_USERNAME?.trim();
 
   return (
     <footer className="mt-24 px-4 pb-8">
@@ -37,34 +36,25 @@ export function SiteFooter() {
                 Posts
               </Link>
               <Link href="/me" className="btn-ghost h-9">
-                <GiteeIcon size={14} />
-                <span>Gitee</span>
+                <Github className="h-3.5 w-3.5" />
+                <span>GitHub</span>
               </Link>
               <a href="/feed.xml" className="btn-ghost h-9" aria-label={t('rss')}>
                 <Rss className="h-3.5 w-3.5" />
                 <span>RSS</span>
               </a>
-              {giteeUser && (
+              {githubUser && (
                 <a
-                  href={`https://gitee.com/${giteeUser}`}
+                  href={`https://github.com/${githubUser}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="btn-ghost h-9 w-9 p-0 text-[#C71D23] hover:text-[#C71D23]"
-                  aria-label="Gitee"
-                  title={`gitee.com/${giteeUser}`}
+                  className="btn-ghost h-9 w-9 p-0"
+                  aria-label="GitHub"
+                  title={`github.com/${githubUser}`}
                 >
-                  <GiteeIcon size={16} />
+                  <Github className="h-3.5 w-3.5" />
                 </a>
               )}
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noreferrer"
-                className="btn-ghost h-9 w-9 p-0"
-                aria-label="GitHub"
-              >
-                <Github className="h-3.5 w-3.5" />
-              </a>
             </nav>
           </div>
         </div>

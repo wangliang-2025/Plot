@@ -3,13 +3,18 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-const categories = [
-  { name: '随笔', slug: 'essays', description: '日常思考与碎片记录', color: '#a78bfa' },
-  { name: '技术', slug: 'tech', description: '工程实践、源码、架构', color: '#60a5fa' },
-  { name: '阅读', slug: 'reading', description: '书摘与读后感', color: '#34d399' },
-];
+// No global seed categories — users create their own from the UI.
+const categories: Array<{
+  name: string;
+  slug: string;
+  description: string;
+  color: string;
+}> = [];
 
-const samplePostsZh = [
+// No sample posts shipped by the seed — the admin starts with an empty
+// workspace and writes their own. Kept for reference only.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _samplePostsZhRef = [
   {
     slug: 'welcome-to-ink',
     title: '欢迎来到 Ink',
@@ -155,7 +160,8 @@ $$
   },
 ];
 
-const samplePostsEn = [
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _samplePostsEnRef = [
   {
     slug: 'hello-world',
     title: 'Hello, world',
@@ -232,7 +238,17 @@ async function main() {
   }
 
   console.log('→ Seeding posts…');
-  const posts = [...samplePostsZh, ...samplePostsEn];
+  const posts: Array<{
+    slug: string;
+    title: string;
+    excerpt: string;
+    locale: string;
+    visibility: 'public';
+    category: string;
+    tags: string[];
+    coverImage: string | null;
+    content: string;
+  }> = []; // no sample posts shipped
   for (const p of posts) {
     const exists = await prisma.post.findUnique({ where: { slug: p.slug } });
     if (exists) {

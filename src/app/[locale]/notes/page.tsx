@@ -4,7 +4,7 @@ import { auth } from '@/lib/auth';
 import { listPosts } from '@/lib/posts';
 import { listCategories } from '@/lib/categories';
 import { formatDateShort } from '@/lib/utils';
-import { PlusCircle, Edit3, Eye, Folder, Settings, User as UserIcon } from 'lucide-react';
+import { PlusCircle, Edit3, Eye, Folder, Settings, Upload, User as UserIcon } from 'lucide-react';
 import { DeletePostButton } from '@/components/delete-post-button';
 
 interface Props {
@@ -56,6 +56,10 @@ export default async function NotesPage({ params, searchParams }: Props) {
           <Link href="/notes/categories" className="btn-secondary h-9">
             <Settings className="h-3.5 w-3.5" />
             {t('manage_categories')}
+          </Link>
+          <Link href="/notes/import" className="btn-secondary h-9">
+            <Upload className="h-3.5 w-3.5" />
+            {t('import_md')}
           </Link>
           <Link href="/notes/new" className="btn-accent h-9">
             <PlusCircle className="h-3.5 w-3.5" />

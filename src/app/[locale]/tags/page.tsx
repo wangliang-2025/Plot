@@ -7,6 +7,8 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function TagsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);

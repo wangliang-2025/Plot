@@ -4,12 +4,22 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { updatePost } from '@/lib/posts';
 
+const coverImageSchema = z
+  .string()
+  .max(5_000_000)
+  .refine(
+    (s) => s.length === 0 || /^(https?:|data:image\/)/i.test(s),
+    'Invalid cover image URL'
+  )
+  .nullable()
+  .optional();
+
 const updateSchema = z.object({
   title: z.string().min(1).optional(),
   slug: z.string().optional(),
   content: z.string().optional(),
   excerpt: z.string().optional(),
-  coverImage: z.string().url().nullable().optional(),
+  coverImage: coverImageSchema,
   locale: z.enum(['zh', 'en']).optional(),
   visibility: z.enum(['public', 'private', 'unlisted']).optional(),
   allowEmbed: z.boolean().optional(),

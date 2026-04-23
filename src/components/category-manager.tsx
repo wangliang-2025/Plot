@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useRouter } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { Folder, Plus, Trash2, Save } from 'lucide-react';
@@ -30,6 +30,12 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
   const t = useTranslations('categories');
   const router = useRouter();
   const [items, setItems] = useState(initial);
+  // Keep local state in sync with server-rendered initial prop after router.refresh().
+  // Without this, newly-created or deleted categories reflected in server data
+  // wouldn't update the client view once this component has mounted.
+  useEffect(() => {
+    setItems(initial);
+  }, [initial]);
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');

@@ -48,6 +48,7 @@
     "back_to_list": "Back to all posts",
     "share": "Share",
     "edit": "Edit",
+    "delete": "Delete",
     "previous": "Previous",
     "next": "Next",
     "draft": "Draft",
@@ -105,13 +106,14 @@
   },
   "me": {
     "badge": "My projects",
-    "title": "My Gitee projects",
-    "subtitle": "All my public repositories on Gitee, synced live and sorted by recent activity.",
-    "view_on_gitee": "Visit my Gitee profile",
-    "open_gitee_directly": "Open Gitee directly",
+    "title": "My GitHub projects",
+    "subtitle": "Public repositories on GitHub, sorted by recent activity. Click any card to open the repo.",
+    "view_on_github": "Visit my GitHub profile",
+    "open_github_directly": "Open GitHub directly",
     "joined_in": "Joined in {year}",
     "repos": "Repos",
     "followers": "Followers",
+    "following": "Following",
     "stars": "Stars",
     "featured_repos": "Featured projects",
     "other_repos": "Other repositories",
@@ -121,12 +123,12 @@
     "private_repo": "Private",
     "archived_repo": "Archived",
     "updated_on": "Updated {date}",
-    "unconfigured_title": "Gitee username not configured",
-    "unconfigured_hint": "Add your Gitee username to .env at the project root, then restart the dev server.",
-    "fetch_failed_title": "Failed to load Gitee data",
-    "fetch_failed_hint": "Couldn't fetch public data for @{username}. This may be a network issue, wrong username, or API rate limiting.",
+    "unconfigured_title": "GitHub username not configured",
+    "unconfigured_hint": "Set NEXT_PUBLIC_GITHUB_USERNAME in .env at the project root, then restart the dev server.",
+    "fetch_failed_title": "Failed to load GitHub data",
+    "fetch_failed_hint": "Couldn't fetch public data for @{username}. This may be a network issue, wrong username, or API rate limiting (60 req/hr without a token).",
     "show_error": "Show error details",
-    "open_on_gitee": "View on Gitee"
+    "open_on_github": "View on GitHub"
   },
   "auth": {
     "login_title": "Welcome back",
@@ -164,7 +166,14 @@
     "filter": "Filter",
     "categories": "Categories",
     "view": "View",
-    "edit": "Edit"
+    "edit": "Edit",
+    "delete": "Delete",
+    "import_md": "Import Markdown",
+    "import_subtitle": "Drop in .md / .mdx files to batch-import them as your notes. Frontmatter (title, tags, date, …) is supported.",
+    "import_hint": ".md / .mdx · multiple files · drag & drop supported",
+    "import_visibility": "Default visibility",
+    "visibility_unlisted": "Unlisted",
+    "files_selected": "{count} file(s) selected"
   },
   "profile": {
     "title": "Profile",
@@ -191,7 +200,7 @@
     "excerpt": "Excerpt (optional)",
     "content": "Content",
     "tags_input": "Tags, comma-separated",
-    "cover_image": "Cover image URL (optional)",
+    "cover_image": "Cover image (URL or local file)",
     "category": "Category",
     "no_category": "(none)",
     "visibility": "Visibility",
@@ -204,7 +213,12 @@
     "saving": "Saving…",
     "preview": "Preview",
     "edit": "Edit",
-    "settings": "Settings"
+    "settings": "Settings",
+    "local_image": "Local image",
+    "insert_local_image": "Pick an image from your computer (auto-compressed)",
+    "insert_attachment": "Insert local attachment",
+    "pick_local": "Pick local file",
+    "asset_hint": "is a placeholder for an inline image/attachment; expanded to a real data URL on save."
   },
   "admin": {
     "dashboard": "Dashboard",

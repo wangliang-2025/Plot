@@ -3,12 +3,25 @@ import { z } from 'zod';
 import { auth } from '@/lib/auth';
 import { listPosts, createPost } from '@/lib/posts';
 
+// Cover image can be either a remote URL, a data: URL (for locally-picked
+// and client-compressed images), or empty. We validate loosely to avoid
+// rejecting the long data URLs produced by the editor.
+const coverImageSchema = z
+  .string()
+  .max(5_000_000)
+  .refine(
+    (s) => s.length === 0 || /^(https?:|data:image\/)/i.test(s),
+    'Invalid cover image URL'
+  )
+  .nullable()
+  .optional();
+
 const postSchema = z.object({
   title: z.string().min(1).max(200),
   slug: z.string().optional(),
   content: z.string().min(1),
   excerpt: z.string().optional(),
-  coverImage: z.string().url().nullable().optional(),
+  coverImage: coverImageSchema,
   locale: z.enum(['zh', 'en']).optional(),
   visibility: z.enum(['public', 'private', 'unlisted']).optional(),
   allowEmbed: z.boolean().optional(),

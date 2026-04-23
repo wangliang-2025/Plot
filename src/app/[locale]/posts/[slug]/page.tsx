@@ -9,6 +9,7 @@ import { MarkdownContent } from '@/components/markdown-content';
 import { TableOfContents } from '@/components/table-of-contents';
 import { CommentsSection } from '@/components/comments-section';
 import { PostActions } from '@/components/post-actions';
+import { DeletePostButton } from '@/components/delete-post-button';
 import { formatDate, readingTime } from '@/lib/utils';
 import { prisma } from '@/lib/db';
 import { Calendar, Clock, ArrowLeft, Eye, Folder, Lock, EyeOff, Pencil } from 'lucide-react';
@@ -58,6 +59,7 @@ export default async function PostPage({ params }: Props) {
     .catch(() => {});
 
   const isOwner = session?.user?.id === post.authorId;
+  const canDelete = isOwner || session?.user?.role === 'admin';
 
   return (
     <div className="reader-page mx-auto w-full max-w-[1800px] px-4 py-8 md:px-8 xl:px-12">
@@ -75,6 +77,9 @@ export default async function PostPage({ params }: Props) {
               <Pencil className="h-3.5 w-3.5" />
               {t('edit')}
             </Link>
+          )}
+          {canDelete && (
+            <DeletePostButton id={post.id} label={t('delete')} redirectTo="/notes" />
           )}
           <PostActions postId={post.id} />
         </div>

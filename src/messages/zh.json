@@ -48,6 +48,7 @@
     "back_to_list": "返回文章列表",
     "share": "分享",
     "edit": "编辑",
+    "delete": "删除",
     "previous": "上一篇",
     "next": "下一篇",
     "draft": "草稿",
@@ -105,13 +106,14 @@
   },
   "me": {
     "badge": "我的项目",
-    "title": "我的 Gitee 项目",
-    "subtitle": "在 Gitee 上的全部公开仓库，按更新时间实时同步。",
-    "view_on_gitee": "前往 Gitee 主页",
-    "open_gitee_directly": "直接打开 Gitee",
+    "title": "我的 GitHub 项目",
+    "subtitle": "GitHub 上的公开仓库，按最近更新排序，点击卡片跳转仓库。",
+    "view_on_github": "前往 GitHub 主页",
+    "open_github_directly": "直接打开 GitHub",
     "joined_in": "{year} 年加入",
     "repos": "仓库",
     "followers": "粉丝",
+    "following": "关注中",
     "stars": "Star",
     "featured_repos": "精选项目",
     "other_repos": "其他仓库",
@@ -121,12 +123,12 @@
     "private_repo": "私有",
     "archived_repo": "已归档",
     "updated_on": "更新于 {date}",
-    "unconfigured_title": "尚未配置 Gitee 用户名",
-    "unconfigured_hint": "请在项目根目录的 .env 中填写你的 Gitee 用户名后重启开发服务器。",
-    "fetch_failed_title": "Gitee 数据加载失败",
-    "fetch_failed_hint": "无法读取 @{username} 的公开数据。可能是网络问题、用户名错误或触发了 API 速率限制。",
+    "unconfigured_title": "尚未配置 GitHub 用户名",
+    "unconfigured_hint": "请在项目根目录的 .env 中填写 NEXT_PUBLIC_GITHUB_USERNAME 后重启开发服务器。",
+    "fetch_failed_title": "GitHub 数据加载失败",
+    "fetch_failed_hint": "无法读取 @{username} 的公开数据。可能是网络问题、用户名错误或触发了 API 速率限制（未登录 60 次/小时）。",
     "show_error": "查看错误详情",
-    "open_on_gitee": "在 Gitee 上查看"
+    "open_on_github": "在 GitHub 上查看"
   },
   "auth": {
     "login_title": "登录",
@@ -164,7 +166,14 @@
     "filter": "筛选",
     "categories": "分类",
     "view": "查看",
-    "edit": "编辑"
+    "edit": "编辑",
+    "delete": "删除",
+    "import_md": "导入 Markdown",
+    "import_subtitle": "选择或拖入 .md / .mdx 文件，批量导入为你的笔记。支持 frontmatter（title、tags、date 等）。",
+    "import_hint": ".md / .mdx · 可多选 · 支持拖放",
+    "import_visibility": "默认可见性",
+    "visibility_unlisted": "仅链接可访问",
+    "files_selected": "已选择 {count} 个文件"
   },
   "profile": {
     "title": "个人信息",
@@ -191,7 +200,7 @@
     "excerpt": "摘要（可选）",
     "content": "正文",
     "tags_input": "标签，用逗号分隔",
-    "cover_image": "封面图 URL（可选）",
+    "cover_image": "封面图（URL 或本地文件）",
     "category": "分类",
     "no_category": "（无分类）",
     "visibility": "可见性",
@@ -204,7 +213,12 @@
     "saving": "保存中…",
     "preview": "预览",
     "edit": "编辑",
-    "settings": "设置"
+    "settings": "设置",
+    "local_image": "本地图片",
+    "insert_local_image": "从本地选择图片（自动压缩）",
+    "insert_attachment": "插入本地附件",
+    "pick_local": "从本地选择",
+    "asset_hint": "是内联图片/附件的占位符，保存前会自动还原为真实 data URL。"
   },
   "admin": {
     "dashboard": "控制台",

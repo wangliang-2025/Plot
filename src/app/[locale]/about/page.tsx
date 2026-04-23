@@ -15,7 +15,7 @@ export default async function AboutPage({ params }: Props) {
     'React 19',
     'TypeScript',
     'Tailwind CSS v3',
-    'Prisma + SQLite',
+    'Prisma + PostgreSQL',
     'Auth.js v5',
     'next-intl',
     'rehype-pretty-code (Shiki)',

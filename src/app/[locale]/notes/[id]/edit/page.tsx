@@ -5,6 +5,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { listCategories } from '@/lib/categories';
 import { PostEditor } from '@/components/post-editor';
+import { DeletePostButton } from '@/components/delete-post-button';
 import { ArrowLeft } from 'lucide-react';
 
 interface Props {
@@ -34,10 +35,13 @@ export default async function EditNotePage({ params }: Props) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Link href="/notes" className="btn-ghost mb-6 h-9">
-        <ArrowLeft className="h-3.5 w-3.5" />
-        {t('back')}
-      </Link>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+        <Link href="/notes" className="btn-ghost h-9">
+          <ArrowLeft className="h-3.5 w-3.5" />
+          {t('back')}
+        </Link>
+        <DeletePostButton id={post.id} label={t('delete')} redirectTo="/notes" />
+      </div>
       <header className="mb-6">
         <h1 className="font-serif text-3xl font-bold">{post.title}</h1>
       </header>

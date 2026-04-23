@@ -10,6 +10,8 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeStringify from 'rehype-stringify';
+import { visit } from 'unist-util-visit';
+import type { Root, Element } from 'hast';
 
 export interface TocItem {
   id: string;
@@ -34,7 +36,17 @@ const baseExtraTags = [
 
 const baseAttributes = {
   ...defaultSchema.attributes,
-  img: [...(defaultSchema.attributes?.img ?? []), 'loading', 'decoding'],
+  img: [
+    ...(defaultSchema.attributes?.img ?? []),
+    'loading',
+    'decoding',
+    'referrerpolicy',
+    'crossorigin',
+    'onerror',
+    'className',
+    'class',
+    'data*',
+  ],
   a: [...(defaultSchema.attributes?.a ?? []), 'target', 'rel'],
   div: ['className', 'class', 'data*'],
   span: ['className', 'class', 'data*', 'style'],
@@ -99,6 +111,45 @@ const embedSchema = {
   },
 };
 
+/**
+ * Post-process rendered HAST images so that every <img> gets:
+ *   - loading="lazy"   (defer off-screen images)
+ *   - decoding="async" (avoid blocking main thread)
+ *   - referrerpolicy="no-referrer" for remote URLs (hotlink-friendly)
+ *   - a data-img-src mirror attribute used by the client-side onerror
+ *     fallback to display a placeholder when the source fails to load.
+ *
+ * Sanitization runs after this plugin, so any attributes added here that
+ * aren't in the allow-list will be stripped — we've extended the img
+ * allow-list above accordingly.
+ */
+function rehypeOptimizeImages() {
+  return (tree: Root) => {
+    visit(tree, 'element', (node: Element) => {
+      if (node.tagName !== 'img') return;
+      const props = (node.properties ??= {});
+      if (!props.loading) props.loading = 'lazy';
+      if (!props.decoding) props.decoding = 'async';
+
+      const src = typeof props.src === 'string' ? props.src : '';
+      if (src && /^https?:/i.test(src) && !props.referrerPolicy) {
+        props.referrerPolicy = 'no-referrer';
+      }
+      // Mirror src so client onerror handler can reveal a placeholder.
+      if (src) props.dataImgSrc = src;
+      // Flag so CSS can style broken images.
+      props.className = [
+        ...(Array.isArray(props.className)
+          ? (props.className as string[])
+          : typeof props.className === 'string'
+            ? [props.className]
+            : []),
+        'md-img',
+      ];
+    });
+  };
+}
+
 const buildProcessor = (allowEmbed: boolean) => {
   const schema = allowEmbed ? embedSchema : safeSchema;
   // Always apply rehypeRaw + rehypeSanitize so that any raw HTML from user
@@ -111,6 +162,7 @@ const buildProcessor = (allowEmbed: boolean) => {
     .use(remarkMath)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
+    .use(rehypeOptimizeImages)
     .use(rehypeSanitize, schema)
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, {

@@ -83,6 +83,12 @@ export function PostsByCategory({
   const locale = useLocale();
   const router = useRouter();
   const [categories, setCategories] = useState<CategoryItem[]>(initialCategories);
+  // Re-sync from the server whenever `initialCategories` changes (e.g. after
+  // router.refresh() following a create/delete). Without this, the local
+  // state would stick to the first-mount snapshot.
+  useEffect(() => {
+    setCategories(initialCategories);
+  }, [initialCategories]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [manageOpen, setManageOpen] = useState(false);
   const [creating, setCreating] = useState(false);
